@@ -40,7 +40,7 @@ describe User do
 	  it 'should be true when all field are valid' do
 	  	user.name = 'John Doe'
 	  	user.email = 'john.doe@someplace.com'
-	  	user.password = 'a_secure_passWord!'
+	  	user.password = 'a_secure_passWord1!'
 	  	user.valid?.should be_true
 	  end
 
@@ -62,6 +62,13 @@ describe User do
 	  	user.name = 'John Doe'
 	  	user.email = 'john.doe@someplace.com'
 	  	user.password = 'Insecu!'
+	  	user.valid?.should be_false
+	  end
+
+	  it 'should be false when password has no number' do 
+	  	user.name = 'John Doe'
+	  	user.email = 'john.doe@someplace.com'
+	  	user.password = 'a_secure_passWord!'
 	  	user.valid?.should be_false
 	  end
 
