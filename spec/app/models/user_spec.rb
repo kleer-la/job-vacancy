@@ -51,6 +51,14 @@ describe User do
 	  	user.valid?.should be_false
 	  end
 
+
+	  it 'should be false when password has no lowercase' do 
+	  	user.name = 'John Doe'
+	  	user.email = 'john.doe@someplace.com'
+	  	user.password = 'A_SECURE_PASSWORD!'
+	  	user.valid?.should be_false
+	  end
+
 	end
 
 	describe 'authenticate' do
