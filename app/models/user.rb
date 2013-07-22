@@ -24,7 +24,8 @@ class User
 
   def secure_password?(password)
     !(password == password.downcase) and 
-    !(password == password.upcase) 
+    !(password == password.upcase) and
+    password.length >= 8
   end
 
   def password= (password)

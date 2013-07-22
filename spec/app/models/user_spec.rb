@@ -51,11 +51,17 @@ describe User do
 	  	user.valid?.should be_false
 	  end
 
-
 	  it 'should be false when password has no lowercase' do 
 	  	user.name = 'John Doe'
 	  	user.email = 'john.doe@someplace.com'
 	  	user.password = 'A_SECURE_PASSWORD!'
+	  	user.valid?.should be_false
+	  end
+
+	  it 'should be false when password is shorter than 8' do 
+	  	user.name = 'John Doe'
+	  	user.email = 'john.doe@someplace.com'
+	  	user.password = 'Insecu!'
 	  	user.valid?.should be_false
 	  end
 
