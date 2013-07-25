@@ -5,7 +5,8 @@ class User
   property :name, String
   property :crypted_password, String
   property :email, String
-  property :secure_password, Boolean, :accessor => :protected 
+
+  attr_accessor :secure_password
 
   validates_presence_of :name
   validates_presence_of :crypted_password
