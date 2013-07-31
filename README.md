@@ -1,4 +1,4 @@
-Job vacancy sample application
+Job Vacancy Application
 ===========
 
 [![Build Status](https://travis-ci.org/kleer-la/job-vacancy.png?branch=story5)](https://travis-ci.org/kleer-la/job-vacancy)
