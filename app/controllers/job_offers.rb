@@ -6,8 +6,8 @@ JobVacancy::App.controllers :job_offers do
   end    
 
   get :index do
-    @offers = JobOffer.all
-    render 'job_offers/search'
+    @offers = JobOffer.all_active
+    render 'job_offers/list'
   end  
 
   get :new do
@@ -16,7 +16,7 @@ JobVacancy::App.controllers :job_offers do
   end
 
   get :latest do
-    @offers = JobOffer.all
+    @offers = JobOffer.all_active
     render 'job_offers/list'
   end
 
@@ -28,14 +28,27 @@ JobVacancy::App.controllers :job_offers do
 
   get :apply, :with =>:offer_id  do
     @job_offer = JobOffer.get(params[:offer_id])
+    @job_application = JobApplication.new
     # ToDo: validate the current user is the owner of the offer
     render 'job_offers/apply'
+  end
+
+  post :apply, :with => :offer_id do
+    @job_offer = JobOffer.get(params[:offer_id])    
+    applicant_email = params[:job_application][:applicant_email]
+    @job_application = JobApplication.create_for(applicant_email, @job_offer)
+    @job_application.process
+    flash[:success] = 'Contact information sent.'
+    redirect '/job_offers'
   end
 
   post :create do
     @job_offer = JobOffer.new(params[:job_offer])
     @job_offer.owner = current_user
     if @job_offer.save
+      if params['create_and_twit']
+        TwitterClient.publish(@job_offer)
+      end
       flash[:success] = 'Offer created'
       redirect '/job_offers/my'
     else
@@ -53,6 +66,18 @@ JobVacancy::App.controllers :job_offers do
     else
       flash.now[:error] = 'Title is mandatory'
       render 'job_offers/edit'
+    end  
+  end
+
+  put :activate, :with => :offer_id do
+    @job_offer = JobOffer.get(params[:offer_id])
+    @job_offer.activate
+    if @job_offer.save
+      flash[:success] = 'Offer activated'
+      redirect '/job_offers/my'
+    else
+      flash.now[:error] = 'Operation failed'
+      redirect '/job_offers/my'
     end  
   end
 
